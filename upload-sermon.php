@@ -35,6 +35,7 @@ if (!isset($_POST['submit'])) { ?>
                     <input type="file" name="audio" />
                 </p>
                 <p>
+                    <input type="hidden" name="uploadid" value="<?=date('Ymdhis').rand(100, 999)?>" />
                     <input type="submit" name="submit" value="Upload" />
                 </p>
             </form>
@@ -44,7 +45,15 @@ if (!isset($_POST['submit'])) { ?>
     <?php exit();
 }
 
+// process the upload
+
 // require wp-load.php to use built-in WordPress functions
 require_once("../wp-load.php");
 
-echo "Successful!";
+// validation
+
+
+$upload_dir = __DIR__."/../wp-content/uploads/";
+
+
+echo "<a href=''>Upload another one</a>";
