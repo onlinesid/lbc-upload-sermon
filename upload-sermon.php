@@ -14,17 +14,28 @@ if (!$validated) {
 }
 
 // display the upload form
-if (!isset($_POST['upload'])) { ?>
+if (!isset($_POST['submit'])) { ?>
 
     <html>
         <head>
             <title>Upload sermon</title>
         </head>
         <body>
-            <form action="" method="post">
+            <form action="" method="post" enctype='multipart/form-data'>
                 <p>
-                    <label>Label:</label>
-                    <input type="text" name="label" value="Matthews 5 (Dave) <?=date('d-M')?>" />
+                    <label>Title:</label>
+                    <input type="text" name="title" value="Matthews 5 (Dave) <?=date('d-M')?>" />
+                </p>
+                <p>
+                    <label>Date (ex.: <?=date('d-M-Y')?>):</label>
+                    <input type="text" name="date" value="<?=date('d-M-Y')?>" />
+                </p>
+                <p>
+                    <label>MP3 file:</label>
+                    <input type="file" name="audio" />
+                </p>
+                <p>
+                    <input type="submit" name="submit" value="Upload" />
                 </p>
             </form>
         </body>
