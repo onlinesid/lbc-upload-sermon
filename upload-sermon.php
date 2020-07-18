@@ -70,7 +70,8 @@ if (substr($_FILES['audio']['type'], 0, 6) !== 'audio/') {
     exit();
 }
 
-$upload_dir = __DIR__."/../wp-content/uploads/";
+$content_dir = "/wp-content/uploads/";
+$upload_dir = __DIR__."/..".$content_dir;
 
 $file_name = preg_replace("/[^A-Za-z0-9\\-\\.]/", "_", trim($_FILES['audio']['name']));
 $path_info = pathinfo($upload_dir.$file_name);
@@ -82,13 +83,81 @@ while (file_exists($upload_dir.'/'.$file_name)) {
     $file_name = $path_info['filename'].'-'.$i.'.'.$path_info['extension'];
 }
 
-echo "<pre>";
-echo print_r($path_info);echo "\n";
-echo "$file_name\n";
+if (!move_uploaded_file($_FILES['audio']['tmp_name'], $upload_dir.$file_name)) {
+    echo "<a href=''>Ooops! something is wrong with the upload, try again!</a>";
+    exit();
+}
+
+//echo "<pre>";
+//print_r($path_info);echo "\n";
+// echo "$file_name\n";
 // print_r($_POST);
 // print_r($_FILES);
-echo "</pre>";
+//echo "</pre>";
 
+$postType = 'post'; // set to post or page
+$userID = WP_USER_ID; // set to user id
+$categoryID = WP_CATEGORY_ID; // set a single category id or a chain of integer ids separated by commas (e.g. ‘2,3,4,5’)
+$postStatus = 'publish';  // set to future, draft, or publish
 
+$leadTitle = $_POST['title'];
 
-echo "Successful!";
+$audio_link = $content_dir.$file_name;
+$leadContent = "
+<!-- wp:audio -->
+<figure class=\"wp-block-audio\"><audio controls src=\"$audio_link\"></audio></figure>
+<!-- /wp:audio -->
+";
+
+/*******************************************************
+** TIME VARIABLES / CALCULATIONS
+*******************************************************/
+// VARIABLES
+$timeStamp = $minuteCounter = 0;  // set all timers to 0;
+$iCounter = 1; // number use to multiply by minute increment;
+$minuteIncrement = 1; // increment which to increase each post time for future schedule
+$adjustClockMinutes = 0; // add 1 hour or 60 minutes - daylight savings
+
+// CALCULATIONS
+$minuteCounter = $iCounter * $minuteIncrement; // setting how far out in time to post if future.
+$minuteCounter = $minuteCounter + $adjustClockMinutes; // adjusting for server timezone
+
+$timeStamp = date('Y-m-d H:i:s', strtotime("+$minuteCounter min")); // format needed for WordPress
+ 
+/*******************************************************
+** WordPress Array and Variables for posting
+*******************************************************/
+
+$new_post = array(
+    'post_title' => $leadTitle,
+    'post_content' => $leadContent,
+    'post_status' => $postStatus,
+    'post_date' => $timeStamp,
+    'post_author' => $userID,
+    'post_type' => $postType,
+    'post_category' => array($categoryID)
+);
+
+/*******************************************************
+** WordPress Post Function
+*******************************************************/
+
+$post_id = wp_insert_post($new_post);
+
+/*******************************************************
+** SIMPLE ERROR CHECKING
+*******************************************************/
+
+$finaltext = '';
+
+if($post_id){
+
+    $finaltext .= 'Successful!!!<br>';
+
+} else{
+
+    $finaltext .= "Something went wrong and I didn\'t insert a new post. <a href=''>try again?</a>";
+
+}
+
+echo $finaltext;
