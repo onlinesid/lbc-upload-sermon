@@ -144,6 +144,8 @@ $new_post = array(
 
 $post_id = wp_insert_post($new_post);
 
+set_post_thumbnail($post_id, WP_FEATURED_IMAGE_ID);
+
 /*******************************************************
 ** SIMPLE ERROR CHECKING
 *******************************************************/
