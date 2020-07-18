@@ -72,7 +72,7 @@ if (substr($_FILES['audio']['type'], 0, 6) !== 'audio/') {
 
 $upload_dir = __DIR__."/../wp-content/uploads/";
 
-$base_file_name = preg_replace("/[^A-Za-z0-9\\-\\.]/", "_", trim($_FILES['audio']['name']));
+$file_name = preg_replace("/[^A-Za-z0-9\\-\\.]/", "_", trim($_FILES['audio']['name']));
 $path_info = pathinfo($upload_dir.$file_name);
 $file_name = $path_info['filename'].'.'.$path_info['extension'];
 
