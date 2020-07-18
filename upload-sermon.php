@@ -47,3 +47,4 @@ if (!isset($_POST['submit'])) { ?>
 // require wp-load.php to use built-in WordPress functions
 require_once("../wp-load.php");
 
+echo "Successful!";
