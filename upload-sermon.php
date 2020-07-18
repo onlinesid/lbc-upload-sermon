@@ -50,17 +50,18 @@ if (!isset($_POST['submit'])) { ?>
 // require wp-load.php to use built-in WordPress functions
 require_once("../wp-load.php");
 
-// these fields can't be empty
-foreach (['title', 'date', 'upload_id', 'submit'] as $f) {
-    if (empty($_POST[$f])) {
-        echo "<a href=''>Ooops! something is wrong, try again!</a>";
-        exit();
-    }
-}
+// // these fields can't be empty
+// foreach (['title', 'date', 'upload_id', 'submit'] as $f) {
+//     if (empty($_POST[$f])) {
+//         echo "<a href=''>Ooops! something is wrong, try again!</a>";
+//         exit();
+//     }
+// }
 
 $upload_dir = __DIR__."/../wp-content/uploads/";
 
 echo "<pre>";
+print_r($_POST);
 print_r($_FILES);
 echo "</pre>";
 
