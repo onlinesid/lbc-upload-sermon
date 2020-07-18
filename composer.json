@@ -1,0 +1,10 @@
+{
+    "name": "onlinesid/lbc-upload-sermon",
+    "description": "PHP script to upload sermon to LBC WordPress website",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^5.1"
+    }
+}
